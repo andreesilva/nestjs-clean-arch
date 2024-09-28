@@ -1,25 +1,16 @@
-import { faker } from '@faker-js/faker/locale/en';
 import { UserEntity, UserProps } from '../../user.entity';
+import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 
 describe('UserEntity unit tests', () => {
   let sut: UserEntity;
   let props: UserProps;
 
   beforeEach(() => {
-    props = {
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    };
+    props = UserDataBuilder({});
     sut = new UserEntity(props);
   });
 
   it('Constructor method', () => {
-    const props = {
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    };
     const sut = new UserEntity(props);
 
     expect(sut.props.name).toEqual(props.name);
