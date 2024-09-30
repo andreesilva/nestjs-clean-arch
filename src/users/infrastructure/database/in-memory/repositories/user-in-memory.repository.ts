@@ -7,8 +7,9 @@ import { UserRepository } from '@/users/domain/repositories/user.repositoriy';
 
 export class UserInMemoryRepository
   extends InMemorySearchableRepository<UserEntity>
-  implements UserRepository
+  implements UserRepository.Repository
 {
+  sortableFields: string[] = ['name', 'createdAt'];
   async findByEmail(email: string): Promise<UserEntity> {
     const entity = this.items.find((item) => item.props.email === email);
     if (!entity) {
@@ -16,10 +17,33 @@ export class UserInMemoryRepository
     }
     return entity;
   }
+
   async emailExists(email: string): Promise<void> {
     const entity = this.items.find((item) => item.props.email === email);
     if (entity) {
       throw new ConflictError('Esse email já esta em uso');
     }
+  }
+
+  protected async applyFilter(
+    items: UserEntity[],
+    filter: string | null,
+  ): Promise<UserEntity[]> {
+    if (!filter) {
+      return items;
+    }
+    return items.filter((item) => {
+      return item.props.name.toLowerCase().includes(filter.toLowerCase());
+    });
+  }
+
+  protected async applySort(
+    items: UserEntity[],
+    sort: string | null,
+    sortDir: string | null,
+  ): Promise<UserEntity[]> {
+    return !sort
+      ? super.applySort(items, 'createdAt', 'desc')
+      : super.applySort(items, sort, sortDir);
   }
 }
