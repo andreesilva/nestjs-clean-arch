@@ -135,5 +135,6 @@ export interface SearchRepositoryInterface<
   SearchInput,
   SearchOutput,
 > extends RepositoryInterface<E> {
+  sortableFields: string[];
   search(props: SearchInput): Promise<SearchOutput>;
 }
