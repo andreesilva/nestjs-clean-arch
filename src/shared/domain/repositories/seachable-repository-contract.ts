@@ -11,18 +11,29 @@ export type SearchProps<Filter = string> = {
   sortDir?: 'asc' | 'desc';
 };
 
+export type SearchResultProps<E extends Entity, Filter> = {
+  items: E[];
+  total: number;
+  currentPage: number;
+  perPage: number;
+  sort: string | null;
+  sortDir: string | null;
+  filter: Filter | null;
+};
+
 export class SearchParams {
   protected _page: number;
   protected _perPage = 15;
   protected _sort: string | null;
   protected _sortDir: SortDirection | null;
   protected _filter: string | null;
+
   constructor(props: SearchProps) {
-    this._page = props.page;
-    this._perPage = props.perPage;
-    this._sort = props.sort;
-    this._sortDir = props.sortDir;
-    this._filter = props.filter;
+    this.page = props.page;
+    this.perPage = props.perPage;
+    this.sort = props.sort;
+    this.sortDir = props.sortDir;
+    this.filter = props.filter;
   }
 
   get page(): number {
@@ -86,6 +97,39 @@ export class SearchParams {
   }
 }
 
+export class SearchResult<E extends Entity, Filter = string> {
+  readonly items: E[];
+  readonly total: number;
+  readonly current_page: number;
+  readonly perPage: number;
+  readonly lastPage: number;
+  readonly sort: string | null;
+  readonly sortDior: string | null;
+  readonly filter: Filter | null;
+
+  constructor(props: SearchResultProps<E, Filter>) {
+    this.items = props.items;
+    this.total = props.total;
+    this.current_page = props.currentPage;
+    this.perPage = props.perPage;
+    this.lastPage = Math.ceil(this.total / this.perPage);
+    this.sort = props.sort ?? null;
+    this.sortDior = props.sortDir ?? null;
+    this.filter = props.filter ?? null;
+  }
+  toJson(forceEntity = false) {
+    return {
+      items: forceEntity ? this.items.map((item) => item.toJSON()) : this.items,
+      total: this.total,
+      current_page: this.current_page,
+      per_page: this.perPage,
+      last_page: this.lastPage,
+      sort: this.sort,
+      sortDior: this.sortDior,
+      filter: this.filter,
+    };
+  }
+}
 export interface SearchRepositoryInterface<
   E extends Entity,
   SearchInput,
