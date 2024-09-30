@@ -102,7 +102,7 @@ export class SearchParams<Filter = string> {
 export class SearchResult<E extends Entity, Filter = string> {
   readonly items: E[];
   readonly total: number;
-  readonly current_page: number;
+  readonly currentPage: number;
   readonly perPage: number;
   readonly lastPage: number;
   readonly sort: string | null;
@@ -112,7 +112,7 @@ export class SearchResult<E extends Entity, Filter = string> {
   constructor(props: SearchResultProps<E, Filter>) {
     this.items = props.items;
     this.total = props.total;
-    this.current_page = props.currentPage;
+    this.currentPage = props.currentPage;
     this.perPage = props.perPage;
     this.lastPage = Math.ceil(this.total / this.perPage);
     this.sort = props.sort ?? null;
@@ -123,7 +123,7 @@ export class SearchResult<E extends Entity, Filter = string> {
     return {
       items: forceEntity ? this.items.map((item) => item.toJSON()) : this.items,
       total: this.total,
-      current_page: this.current_page,
+      currentPage: this.currentPage,
       per_page: this.perPage,
       last_page: this.lastPage,
       sort: this.sort,
