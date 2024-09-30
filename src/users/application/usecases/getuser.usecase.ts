@@ -1,4 +1,6 @@
 import { UserRepository } from '@/users/domain/repositories/user.repositoriy';
+import { UserOutput } from '../dto/user-output';
+import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetUserUseCase {
@@ -6,15 +8,9 @@ export namespace GetUserUseCase {
     id: string;
   };
 
-  export type Output = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    createdAt: Date;
-  };
+  export type Output = UserOutput;
 
-  export class UseCase {
+  export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(private userRepository: UserRepository.Repository) {}
 
     async execute(Input): Promise<Output> {
