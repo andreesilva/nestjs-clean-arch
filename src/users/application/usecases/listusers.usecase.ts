@@ -5,7 +5,7 @@ import { UserRepository } from '@/users/domain/repositories/user.repositoriy';
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case';
 
 import { PaginationOutput } from '@/shared/application/dto/pagination-output';
-import { UserOutput } from '../dto/user-output';
+import { UserOutput, UserOutputMapper } from '../dto/user-output';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ListUsersUseCase {
