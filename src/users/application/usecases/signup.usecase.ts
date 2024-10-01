@@ -21,8 +21,8 @@ export namespace SignupUseCase {
       private hashProvider: HashProvider,
     ) {}
 
-    async execute(Input): Promise<Output> {
-      const { name, email, password } = Input;
+    async execute(input: Input): Promise<Output> {
+      const { name, email, password } = input;
 
       if (!name || !email || !password) {
         throw new BadRequestError('Existe campos vazios');
@@ -33,7 +33,7 @@ export namespace SignupUseCase {
       const hashPassword = await this.hashProvider.generateHash(password);
 
       const entity = new UserEntity(
-        Object.assign(Input, { password: hashPassword }),
+        Object.assign(input, { password: hashPassword }),
       );
 
       await this.userRepository.insert(entity);

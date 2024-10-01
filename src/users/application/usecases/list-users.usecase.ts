@@ -1,5 +1,5 @@
-import { PaginationOutputMapper } from './../../../shared/application/dto/pagination-output';
-import { SearchInput } from './../../../shared/application/dto/search-input';
+import { PaginationOutputMapper } from '../../../shared/application/dto/pagination-output';
+import { SearchInput } from '../../../shared/application/dto/search-input';
 
 import { UserRepository } from '@/users/domain/repositories/user.repositoriy';
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case';
@@ -16,8 +16,8 @@ export namespace ListUsersUseCase {
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(private userRepository: UserRepository.Repository) {}
 
-    async execute(Input): Promise<Output> {
-      const params = new UserRepository.SearchParams(Input);
+    async execute(input: Input): Promise<Output> {
+      const params = new UserRepository.SearchParams(input);
 
       const searchResult = await this.userRepository.search(params);
 
