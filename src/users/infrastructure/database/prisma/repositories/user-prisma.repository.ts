@@ -3,16 +3,30 @@ import { UserRepository } from './../../../../domain/repositories/user.repositor
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
 import { UserModelMapper } from '../models/user-model.mapper';
+import { ConflictError } from '@/shared/domain/errors/conflict-error';
 export class UserPrismaRepository implements UserRepository.Repository {
   sortableFields: string[] = ['name', 'createdAt'];
 
   constructor(private prismaService: PrismaService) {}
 
-  findByEmail(email: string): Promise<UserEntity> {
-    throw new Error('Method not implemented.');
+  async findByEmail(email: string): Promise<UserEntity> {
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: { email },
+      });
+      return UserModelMapper.toEntity(user);
+    } catch (error) {
+      throw new NotFoundError('Usuario não encontrado');
+    }
   }
-  emailExists(email: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async emailExists(email: string): Promise<void> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email },
+    });
+
+    if (user) {
+      throw new ConflictError('Esse email já está em uso');
+    }
   }
 
   async search(
@@ -65,11 +79,19 @@ export class UserPrismaRepository implements UserRepository.Repository {
       data: entity,
     });
   }
-  update(entity: UserEntity): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(entity: UserEntity): Promise<void> {
+    await this._get(entity._id);
+
+    await this.prismaService.user.update({
+      data: entity.toJSON,
+      where: { id: entity._id },
+    });
   }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<void> {
+    await this._get(id);
+    await this.prismaService.user.delete({
+      where: { id },
+    });
   }
   findById(id: string): Promise<UserEntity> {
     return this._get(id);
