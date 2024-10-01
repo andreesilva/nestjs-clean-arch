@@ -1,6 +1,6 @@
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BadRequestError } from '@/shared/application/errors/bad-request-error';
-import { UserEntity } from '@/users/domain/entities/user.entity';
+
 import { UserRepository } from '@/users/domain/repositories/user.repositoriy';
 import { UserOutput, UserOutputMapper } from '../dto/user-output';
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case';
