@@ -4,7 +4,9 @@ import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
 import { join } from 'node:path';
 
 @Module({
+  imports: [ConfigModule],
   providers: [EnvConfigService],
+  exports: [EnvConfigService],
 })
 export class EnvConfigModule extends ConfigModule {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
