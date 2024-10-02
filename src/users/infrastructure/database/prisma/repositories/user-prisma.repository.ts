@@ -32,7 +32,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
   async search(
     props: UserRepository.SearchParams,
   ): Promise<UserRepository.SearchResult> {
-    const sortable = this.sortableFields.includes(props.sort) || false;
+    const sortable = this.sortableFields?.includes(props.sort) || false;
     const orderByField = sortable ? props.sort : 'createdAt';
     const orderByDir = sortable ? props.sortDir : 'desc';
 
