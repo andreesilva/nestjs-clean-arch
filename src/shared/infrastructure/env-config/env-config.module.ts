@@ -9,7 +9,6 @@ import { join } from 'node:path';
   exports: [EnvConfigService],
 })
 export class EnvConfigModule extends ConfigModule {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
     return super.forRoot({
       ...options,
