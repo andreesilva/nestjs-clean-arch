@@ -42,7 +42,7 @@ export class SearchParams<Filter = string> {
   private set page(value: number) {
     let _page = +value;
 
-    if (Number.isNaN(_page) || _page < 0 || parseInt(_page as any) !== _page) {
+    if (Number.isNaN(_page) || _page <= 0 || parseInt(_page as any) !== _page) {
       _page = 1;
     }
 
