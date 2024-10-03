@@ -1,4 +1,4 @@
-name: CI _unit Tests
+name: CI - Unit Tests
 
 on: [push]
 
