@@ -170,6 +170,15 @@ export class UsersController {
     return UsersController.listUsersToResponse(output);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Acesso não autorizado',
+  })
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
@@ -178,6 +187,19 @@ export class UsersController {
     return UsersController.userToResponse(output);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Acesso não autorizado',
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
+  })
   @UseGuards(AuthGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
