@@ -33,7 +33,15 @@ import { ListUsersDto } from './dto/list-users.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserOutput } from '../application/dto/user-output';
 import { AuthService } from '@/auth/infrastructure/auth.service';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import { get } from 'http';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   @Inject(SignupUseCase.UseCase)
@@ -85,6 +93,46 @@ export class UsersController {
     return this.authService.generateJwt(output.id);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        meta: {
+          type: 'object',
+          properties: {
+            total: {
+              type: 'number',
+            },
+            currentPage: {
+              type: 'number',
+            },
+            lastPage: {
+              type: 'number',
+            },
+            perPage: {
+              type: 'number',
+            },
+          },
+        },
+        data: {
+          type: 'array',
+          items: {
+            $ref: getSchemaPath(UserPresenter),
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Parametros inválidos',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Acesso não autorizado',
+  })
   @UseGuards(AuthGuard)
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
