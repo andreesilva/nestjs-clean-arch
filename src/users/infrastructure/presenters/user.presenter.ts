@@ -2,12 +2,27 @@ import { CollectionPresenter } from '@/shared/infrastructure/presenters/collecti
 import { UserOutput } from '@/users/application/dto/user-output';
 import { ListUsersUseCase } from '@/users/application/usecases/list-users.usecase';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UserPresenter {
+  @ApiProperty({
+    description: 'Identificador do usuário',
+  })
   id: string;
+
+  @ApiProperty({
+    description: 'Nome do usuario',
+  })
   name: string;
+
+  @ApiProperty({
+    description: 'Email do usuário',
+  })
   email: string;
 
+  @ApiProperty({
+    description: 'Data de criação do usuário',
+  })
   @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
