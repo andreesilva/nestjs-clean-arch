@@ -40,6 +40,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { get } from 'http';
+import { ac } from '@faker-js/faker/dist/airline-C5Qwd7_q';
 
 @ApiTags('users')
 @Controller('users')
@@ -91,12 +92,33 @@ export class UsersController {
     return UsersController.userToResponse(output);
   }
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Email não encontrado',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Credenciais inválidas',
+  })
   @HttpCode(200)
   @Post('login')
   async login(@Body() signinDto: SigninDto) {
     const output = await this.signinUseCase.execute(signinDto);
-
-    //console.log(output);
 
     return this.authService.generateJwt(output.id);
   }
