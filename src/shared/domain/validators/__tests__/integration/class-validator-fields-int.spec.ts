@@ -1,4 +1,4 @@
-import { ClassValidatorFields } from '@/users/domain/validators/class-validator-fields';
+import { ClassValidatorFields } from '../../class-validator-fields';
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
 
 class StubRules {
