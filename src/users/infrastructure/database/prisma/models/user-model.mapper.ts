@@ -1,4 +1,4 @@
-import { ValidatorError } from '@/shared/domain/errors/validation-error';
+import { ValidationError } from '@/shared/domain/errors/validation-error';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { User } from '@prisma/client';
 
@@ -14,7 +14,7 @@ export class UserModelMapper {
     try {
       return new UserEntity(data, model.id);
     } catch {
-      throw new ValidatorError(' Falha na validação dos dados');
+      throw new ValidationError(' Falha na validação dos dados');
     }
   }
 }
