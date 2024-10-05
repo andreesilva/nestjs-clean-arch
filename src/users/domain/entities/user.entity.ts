@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { Entity } from '@/shared/domain/entities/entity';
 import { UserValidatorFactory } from '../validators/user.validator';
 import { EntityValidationError } from '@/shared/domain/errors/validation-error';
